@@ -14,7 +14,10 @@ public class CustomerController {
 	
 	public Customer save(Customer customer) throws CustomerExistException{
 		return this.customerService.save(customer);
+	}
 	
+	public Customer login(String id, String password) throws Exception {
+		return this.customerService.login(id, password);
+	}
 
-}
 }

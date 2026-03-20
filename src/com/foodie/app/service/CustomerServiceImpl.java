@@ -29,7 +29,20 @@ public class CustomerServiceImpl implements CustomerService{
 		if(customerById.isPresent())
 			throw new CustomerExistException("Customeralready exist with this id : " + customer.getCustomerId());
 		return this.customerRepository.save(customer);
-	} 
+	}
+	
+	@Override
+	public Customer login(String id, String password) throws Exception {
+		Optional<Customer> customerById = this.customerRepository.findCustomerById(id);
+		if (!customerById.isPresent()) {
+			throw new Exception("Customer not found with id: " + id);
+		}
+		Customer customer = customerById.get();
+		if (!customer.getPassword().equals(password)) {
+			throw new Exception("Invalid password");
+		}
+		return customer;
+	}
 	
 
 }

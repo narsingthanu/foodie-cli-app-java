@@ -10,11 +10,14 @@ import java.util.List;
 
 import com.foodie.app.model.Customer;
 import com.foodie.app.model.Dish;
+import com.foodie.app.model.Restaurant;
 
 
 public class CsvReader {
+	private static final String DATA_FOLDER = "data";
+	
 	public List<Customer> readcustomersFromCsv(){
-		String customersCsvFilePath = "C:\\Users\\bandi\\OneDrive\\Desktop\\New folder (2)\\data\\customers.csv";
+		String customersCsvFilePath = DATA_FOLDER + "/customers.csv";
 		List<Customer> customersList = new ArrayList<>();
 		//java io classes (Filereader , BufferedReader)
 		String line;
@@ -43,7 +46,7 @@ public class CsvReader {
 	
     
     public List<Dish> readDishesFromCsv() {
-        String DISHES_CSV_PATH = "C:\\Users\\bandi\\OneDrive\\Desktop\\New folder (2)\\data\\dishes.csv";
+        String DISHES_CSV_PATH = DATA_FOLDER + "/dishes.csv";
         String line;
         List<Dish> dishesList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(DISHES_CSV_PATH))) {
@@ -65,6 +68,30 @@ public class CsvReader {
             System.exit(0);
         }
         return dishesList;
+    }
+    
+    public List<Restaurant> readRestaurantsFromCsv() {
+        String RESTAURANTS_CSV_PATH = "data/restaurants.csv";
+        String line;
+        List<Restaurant> restaurantsList = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(RESTAURANTS_CSV_PATH))) {
+            String cvsSplitBy = ",";
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(cvsSplitBy);
+                Restaurant restaurant = new Restaurant();
+                restaurant.setId(data[0])
+                        .setName(data[1])
+                        .setAddress(data[2])
+                        .setMenu(Arrays.asList(data[3].split(":")));
+                restaurantsList.add(restaurant);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Issues in reading csv file from the path :" + RESTAURANTS_CSV_PATH);
+            System.exit(0);
+        }
+        return restaurantsList;
     }
         
 }
